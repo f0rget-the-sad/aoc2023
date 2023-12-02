@@ -1,26 +1,10 @@
-#import "Basic";
-#import "File";
-#import "String";
-
-get_input :: () -> string {
-	file_path := "input.txt";
-	file, read := read_entire_file(file_path);
-	if !read {
-		print("Cannot read file: %\n", file_path);
-		exit(1);
-	}
-
-	return file;
-}
+#load "../utils.jai";
 
 part1 :: () {
-	input := get_input();
-	defer free(input);
-	lines := split(input, "\n");
+    lines := get_input_as_lines();
 	s : u32 = 0;
 	
 	for l : lines {
-		if l.count == 0 break;
 		n : u8;
 
 		for 0..l.count-1 {
@@ -37,7 +21,6 @@ part1 :: () {
 			}
 		}
 
-		print("l: % Digit: %\n", l, n);
 		s += n;
 
 	}
@@ -54,7 +37,6 @@ part2 :: () {
 	nums := string.["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
 	for l : lines {
-		if l.count == 0 break;
 		min_idx : s64 = l.count;
 		min_val : u8 = 0;
 
