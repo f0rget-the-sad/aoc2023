@@ -15,6 +15,33 @@ get_input :: (file_path := "input.txt") -> string {
 
 get_input_as_lines :: (file_path := "input.txt") -> []string {
 	input := get_input(file_path);
-    input.count -= 1; // remove last new line
-	return split(input, "\n");
+	return aoc_split(input, "\n");
+}
+
+Basic :: #import "Basic";
+using Basic;
+// from 'modules/String'
+// same as split but without empty elements
+// XXX: suggest to have an option for this in std?
+aoc_split :: (s: string, separator: $T, allocator := Basic.temp) -> [] string {  // separator must be a string or byte. Returns an array in temporary storage by default.
+	#assert (T == u8) || (T == string);
+
+	results: [..] string;
+	results.allocator = allocator;
+
+	remainder := s;
+	while remainder {
+		found, left, right := split_from_left(remainder, separator);
+		if found {
+			if (left.count)
+				array_add(*results, left);
+		} else {
+			array_add(*results, remainder);
+			break;
+		}
+
+		remainder = right;
+	}
+
+	return results;
 }
