@@ -55,3 +55,23 @@ aoc_parse_int :: (line: *string, $T : Type = int) -> T {
 	assert(ok);
 	return value;
 }
+
+// from 'how_to/110_polymorphic_arguments.jai'
+map :: (array: [] $T, f: (T) -> $S) -> [..] S {
+	results: [..] S;
+
+	for array array_add(*results, f(it));
+
+	return results;
+}
+
+/* XXX: overloaded function does not resolve for map-like
+str2int :: (line: string, asdf: bool) -> int {
+	print("This is bool version\n");
+	return aoc_parse_int(*line, int);
+}
+*/
+
+str2int :: (line: string) -> int {
+	return aoc_parse_int(*line, int);
+}
