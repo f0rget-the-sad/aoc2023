@@ -1,6 +1,8 @@
 #import "Basic";
 #import "File";
 #import "Hash_Table";
+#import "Math";
+#import "Sort";
 #import "String";
 
 get_input :: (file_path := "input.txt") -> string {
@@ -13,9 +15,11 @@ get_input :: (file_path := "input.txt") -> string {
 	return file;
 }
 
-get_input_as_lines :: (file_path := "input.txt") -> []string {
+get_input_as_lines :: (file_path := "input.txt", new_line_in_end := false) -> []string {
 	input := get_input(file_path);
-	return aoc_split(input, "\n");
+	lines := split(input, "\n");
+	if !new_line_in_end lines.count -= 1;
+	return lines;
 }
 
 Basic :: #import "Basic";
@@ -44,4 +48,10 @@ aoc_split :: (s: string, separator: $T, allocator := Basic.temp) -> [] string { 
 	}
 
 	return results;
+}
+
+aoc_parse_int :: (line: *string, $T : Type = int) -> T {
+	value, ok := parse_int(line, T);
+	assert(ok);
+	return value;
 }
