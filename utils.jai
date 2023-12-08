@@ -75,3 +75,12 @@ str2int :: (line: string, asdf: bool) -> int {
 str2int :: (line: string) -> int {
 	return aoc_parse_int(*line, int);
 }
+
+gcd :: (a : int, b: int) -> int {
+    if(b == 0) return a;
+    return gcd(b, a % b);
+}
+
+lcm :: (a: int, b: int) -> int {
+	return (a*b) / gcd(a, b);
+}
