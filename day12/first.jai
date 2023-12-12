@@ -40,9 +40,11 @@ count :: (s: []u8, ints: []int) -> int {
     }
 
     key : = Key.{s=s, ints=ints, val=0};
-    // XXX: find_or_add looks like had a bug, returned entry pointer is not valid?
-    //val, is_new := find_or_add(*memo, key);
-    //if !is_new return <<val;
+    /* XXX: find_or_add looks like had a bug, returned entry pointer is not valid?
+     * upd: problem is that hash table gets updated between find_or_add call and
+     * pointer usage, so some values are realocated and obtained pointer becomes
+     * no longer valid
+     */
     val, ok := table_find(*memo, key);
     if ok return val;
 
@@ -57,7 +59,6 @@ count :: (s: []u8, ints: []int) -> int {
             result += count(trim_front(s, ints[0] + 1), trim_front(ints, 1));
     }
 
-    //<<val = result;
     table_add(*memo, key, result);
 
     return result;
