@@ -1,5 +1,6 @@
 #import "Basic";
 #import "File";
+#import "Hash";
 #import "Hash_Table";
 #import "Math";
 #import "Sort";
@@ -65,6 +66,14 @@ map :: (array: [] $T, f: (T) -> $S) -> [..] S {
 	return results;
 }
 
+filter_idx :: (array: [] $T, f: (T) -> bool) -> [..] int {
+	results: [..] int;
+
+	for array if f(it) array_add(*results, it_index);
+
+	return results;
+}
+
 /* XXX: overloaded function does not resolve for map-like
 str2int :: (line: string, asdf: bool) -> int {
 	print("This is bool version\n");
@@ -83,4 +92,60 @@ gcd :: (a : int, b: int) -> int {
 
 lcm :: (a: int, b: int) -> int {
 	return (a*b) / gcd(a, b);
+}
+
+chars :: (s: string) -> [..]u8 {
+    chars : [..]u8;
+    for 0..s.count-1 {
+        array_add(*chars, s[it]);
+    }
+    return chars;
+}
+
+trim_front :: (s: [] $T, n: int) -> []T {
+    t := s;
+    if n > s.count {
+        t.count = 0;
+        return t;
+    }
+    t.data += n;
+    t.count -= n;
+    return t;
+}
+
+trim_to :: (s: [] $T, n: int) -> []T {
+    assert(n <= s.count);
+    t := s;
+    t.count = n;
+    return t;
+}
+
+contains :: (s : [] $T, el: T) -> bool {
+    for s {
+        if it == el return true;
+    }
+    return false;
+}
+
+repeat_with :: (arr: *[..] $T, n: int, between: T) {
+
+    arr_len := arr.count;
+
+    for 0..n-2 {
+        array_add(arr, between);
+        for 0..arr_len-1 {
+            array_add(arr, arr.data[it]);
+        }
+    }
+}
+
+repeat :: (arr: *[..] $T, n: int) {
+
+    arr_len := arr.count;
+
+    for 0..n-2 {
+        for 0..arr_len-1 {
+            array_add(arr, arr.data[it]);
+        }
+    }
 }
